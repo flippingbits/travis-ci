@@ -1,11 +1,5 @@
-class Artifact::Log < ActiveRecord::Base
-  belongs_to :task
-
+class Artifact::Log < Artifact
   def append(chars)
     self.class.update_all(["message = COALESCE(message, '') || ?", chars], ["id = ?", id])
-  end
-
-  def to_s
-    message || ""
   end
 end

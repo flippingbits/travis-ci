@@ -1,5 +1,3 @@
-module Artifact
-  def self.table_name_prefix
-    'artifacts_'
-  end
+class Artifact < ActiveRecord::Base
+  belongs_to :task
 end

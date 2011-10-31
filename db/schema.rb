@@ -13,9 +13,10 @@
 
 ActiveRecord::Schema.define(:version => 20111031115207) do
 
-  create_table "artifacts_logs", :force => true do |t|
+  create_table "artifacts", :force => true do |t|
     t.string   "message"
     t.integer  "task_id"
+    t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

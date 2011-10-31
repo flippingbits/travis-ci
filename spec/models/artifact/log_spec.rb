@@ -16,21 +16,4 @@ describe Artifact::Log do
       end
     end
   end
-
-  describe "#to_s" do
-    let(:log) { Factory.build(:log) }
-
-    context "given @message exists" do
-      it "returns the message" do
-        log.to_s.should eql(log.message)
-      end
-    end
-
-    context "given @message does not exist" do
-      it "returns an empty string" do
-        log.message = nil
-        log.to_s.should eql("")
-      end
-    end
-  end
 end
