@@ -184,10 +184,10 @@ WORKER_PAYLOADS = {
   'task:configure:started'  => { 'build' => { 'started_at'  => '2011-01-01 00:00:00 +0200' } },
   'task:configure:finished' => { 'build' => { 'finished_at' => '2011-01-01 00:01:00 +0200', 'config' => { 'rvm' => ['1.8.7', '1.9.2'] } } },
   'task:test:started'       => { 'build' => { 'started_at'  => '2011-01-01 00:02:00 +0200' } },
-  'task:test:log:1'         => { 'build' => { 'log'  => 'the '  } },
-  'task:test:log:2'         => { 'build' => { 'log'  => 'full ' } },
-  'task:test:log:3'         => { 'build' => { 'log'  => 'log'   } },
-  'task:test:finished'      => { 'build' => { 'finished_at' => '2011-01-01 00:03:00 +0200', 'status' => 0, 'log' => 'the full log' } }
+  'task:test:log:1'         => { 'build' => { 'log'  => Artifact::Log.new(:message => 'the ') } },
+  'task:test:log:2'         => { 'build' => { 'log'  => Artifact::Log.new(:message => 'full ') } },
+  'task:test:log:3'         => { 'build' => { 'log'  => Artifact::Log.new(:message => 'log')  } },
+  'task:test:finished'      => { 'build' => { 'finished_at' => '2011-01-01 00:03:00 +0200', 'status' => 0, 'log' => Artifact::Log.new(:message => 'the full log') } }
 }
 
 QUEUE_PAYLOADS = {

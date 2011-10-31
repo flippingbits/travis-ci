@@ -12,6 +12,7 @@ class Task < ActiveRecord::Base
 
   event :all, :after => :notify
 
+  has_one    :log, :class_name => "Artifact::Log"
   belongs_to :repository
   belongs_to :commit
   belongs_to :owner, :polymorphic => true, :autosave => true
@@ -34,7 +35,8 @@ class Task < ActiveRecord::Base
   end
 
   def append_log!(chars)
-    self.class.update_all(["log = COALESCE(log, '') || ?", chars], ["id = ?", id])
+    log ||= Artifact::Log.create
+    log.append(chars)
     notify(:log, :build => { :_log => chars })
   end
 

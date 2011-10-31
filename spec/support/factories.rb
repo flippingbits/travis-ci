@@ -69,4 +69,8 @@ FactoryGirl.define do
     f.email 'sven@fuchs.com'
     f.tokens { [Token.new] }
   end
+
+  factory :log, :class => 'Artifact::Log' do |f|
+    f.message '$ bundle install --pa'
+  end
 end
