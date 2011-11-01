@@ -79,7 +79,7 @@ describe TasksController do
       end
 
       it "appends the log output to the task's log" do
-        task.reload.log.should == '... appended'
+        task.reload.log.message.should eql('... appended')
       end
     end
 
@@ -115,7 +115,7 @@ describe TasksController do
 
     it "appends the log to the given task" do
       put :log, payload.merge(:id => task)
-      log = build.reload.matrix.first.artifacts.where(:type => "Artifact::Log").first
+      log = build.reload.matrix.first.log
       log.message.should eql("final build log")
     end
   end

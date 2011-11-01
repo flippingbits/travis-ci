@@ -12,6 +12,7 @@ class Task < ActiveRecord::Base
 
   event :all, :after => :notify
 
+  has_one    :log, :class_name => "Artifact::Log", :conditions => { :type => "Artifact::Log" }
   has_many   :artifacts
   belongs_to :repository
   belongs_to :commit
@@ -30,12 +31,14 @@ class Task < ActiveRecord::Base
   end
 
   def update_attributes(attributes)
+    if message = attributes.delete(:log)
+      log.update_attributes(:message => message)
+    end
     update_states_from_attributes(attributes)
     super
   end
 
   def append_log!(chars)
-    log = artifacts.find_or_create_by_type("Artifact::Log")
     log.append(chars)
     notify(:log, :build => { :_log => chars })
   end
