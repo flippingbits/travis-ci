@@ -107,4 +107,16 @@ describe TasksController do
       end
     end
   end
+
+  describe "PUT log" do
+    let(:payload) { { 'build' => { 'log' => 'final build log' } } }
+    let(:build)   { Factory(:build, :config => { :rvm => ['1.8.7', '1.9.2'] }) }
+    let(:task)    { build.matrix.first }
+
+    it "appends the log to the given task" do
+      put :log, payload.merge(:id => task)
+      log = build.reload.matrix.first.artifacts.where(:type => "Artifact::Log").first
+      log.message.should eql("final build log")
+    end
+  end
 end
