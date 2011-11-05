@@ -1,23 +1,20 @@
 require 'spec_helper'
 
 describe QueuesController, :type => :controller do
-  before do
-    # TODO shouldn't this use the actual output of the json rendering?
-    repository = { 'id' => 8, 'slug' => 'svenfuchs/gem-release' }
-    build_3    = { 'id' => 1, 'number' => '3',   'commit' => 'b0a1b69', 'config' => {} }
-    build_31   = { 'id' => 2, 'number' => '3.1', 'commit' => 'b0a1b69', 'config' => {} }
-  end
+  let(:first_job)  { Factory.create(:test, :number => '3') }
+  let(:second_job) { Factory.create(:test, :number => '3.1') }
 
   subject do
+    first_job.start!
+    second_job.start!
     get :index, :format => :json
     ActiveSupport::JSON.decode(response.body)
   end
 
   it 'index lists all jobs on the queue' do
-    pending
     should == [
-      { 'id' => 1, 'number' => '3',   'commit' => 'b0a1b69', 'repository' => { 'id' => 8, 'slug' => 'svenfuchs/gem-release' } },
-      { 'id' => 2, 'number' => '3.1', 'commit' => 'b0a1b69', 'repository' => { 'id' => 8, 'slug' => 'svenfuchs/gem-release' } },
+      { 'id' => first_job.id, 'number' => '3',   'commit' => '62aae5f70ceee39123ef', 'repository' => { 'id' => first_job.repository.id, 'slug' => 'svenfuchs/repository-1' } },
+      { 'id' => second_job.id, 'number' => '3.1', 'commit' => '62aae5f70ceee39123ef', 'repository' => { 'id' => second_job.repository.id, 'slug' => 'svenfuchs/repository-2' } },
     ]
   end
 end

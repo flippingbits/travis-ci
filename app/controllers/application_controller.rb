@@ -14,7 +14,17 @@ class ApplicationController < ActionController::Base
     helper_method :repositories
 
     def jobs
-      @jobs ||= []
+      @jobs ||= Job.queued.collect do |job|
+        {
+          :id         => job.id,
+          :number     => job.number,
+          :commit     => job.commit.commit,
+          :repository => {
+            :id   => job.repository.id,
+            :slug => job.repository.slug
+          }
+        }
+      end
     end
     helper_method :jobs
 
