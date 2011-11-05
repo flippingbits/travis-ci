@@ -18,4 +18,23 @@ describe Job do
       Job::Test.append_log!(job.id, 'chars')
     end
   end
+
+  describe ".queued" do
+    let(:jobs) do
+      [
+        Factory.create(:test),
+        Factory.create(:test),
+        Factory.create(:test)
+      ]
+    end
+
+    it "returns jobs that are started but not finished" do
+      jobs.each { |job| job.start! }
+      jobs.first.finish!
+      jobs.third.finish!
+
+      Job.queued.should have(1).item
+      Job.queued.should include(jobs.second)
+    end
+  end
 end

@@ -30,4 +30,10 @@ class Job < ActiveRecord::Base
       self.config[key.to_sym] == config[key] || commit.branch == config[key]
     end.inject(:&)
   end
+
+  class << self
+    def queued
+      where(:state => :started)
+    end
+  end
 end

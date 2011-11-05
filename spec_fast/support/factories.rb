@@ -21,7 +21,7 @@ FactoryGirl.define do
   end
 
   factory :test, :class => 'Job::Test' do |f|
-    f.repository { Factory(:repository) }
+    f.repository { Factory(:dynamic_repository) }
     f.commit     { Factory(:commit) }
     f.owner      { Factory(:build) }
     f.log        { Factory(:log) }
@@ -37,6 +37,8 @@ FactoryGirl.define do
     f.token 'the-token'
   end
 
+  sequence(:name) { |i| "repository-#{i}" }
+
   factory :repository do |f|
     f.name 'minimal'
     f.owner_name 'svenfuchs'
@@ -45,6 +47,10 @@ FactoryGirl.define do
     f.last_duration 60
     f.created_at { |r| Time.utc(2011, 01, 30, 5, 25) }
     f.updated_at { |r| r.created_at + 5.minutes }
+
+    factory :dynamic_repository do
+      name
+    end
   end
 
   factory :user do |f|
