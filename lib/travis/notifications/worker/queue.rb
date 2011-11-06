@@ -16,6 +16,10 @@ module Travis
           name
         end
 
+        def jobs
+          Job.queued.select { |job| Worker.queue_for(job).try(:name) == name }
+        end
+
         protected
 
           def matches_slug?(slug)

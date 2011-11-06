@@ -8,6 +8,7 @@ describe Travis::Notifications::Worker::Queue do
     Travis::Notifications::Worker::Queue.new(*args)
   end
 
+  let(:ruby)    { queue('ruby', nil, nil, nil) }
   let(:rails)   { queue('rails', 'rails/rails', nil) }
   let(:erlang)  { queue('erlang', nil, 'erlang', nil) }
   let(:clojure) { queue('builds', nil, nil, 'clojure') }
@@ -31,6 +32,16 @@ describe Travis::Notifications::Worker::Queue do
 
     it "returns false when none of slug, target or language match" do
       erlang.matches?('foo/bar', 'worker-on-mars', 'COBOL').should be_false
+    end
+  end
+
+  describe "#jobs" do
+    let(:test) { Factory.create(:test) }
+
+    it "returns jobs that are matching the queue" do
+      test.start!
+      ruby.jobs.should have(1).item
+      ruby.jobs.should include(test)
     end
   end
 end
