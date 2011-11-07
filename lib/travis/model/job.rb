@@ -25,7 +25,7 @@ class Job < ActiveRecord::Base
 
   before_create do
     build_log
-    self.state = "created" if self.state.nil?
+    self.state ||= "created"
   end
 
   def matrix_config?(config)
