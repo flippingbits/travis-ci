@@ -13,8 +13,10 @@ class ApplicationController < ActionController::Base
     end
     helper_method :repositories
 
-    def jobs
-      @jobs ||= Job.queued.collect do |job|
+    def jobs(queue=nil)
+      queue   = Travis::Notifications::Worker.queues.select { |queue| queue.name == queue_name }.first
+      queue ||= Travis::Notifications::Worker.default_queue
+      queue.jobs.collect do |job|
         {
           :id         => job.id,
           :number     => job.number,
