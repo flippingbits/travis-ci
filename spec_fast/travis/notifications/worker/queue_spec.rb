@@ -36,11 +36,8 @@ describe Travis::Notifications::Worker::Queue do
   end
 
   describe "#jobs" do
-    let(:test) { Factory.create(:test) }
-
     it "returns jobs that are matching the queue" do
-      test.start!
-      ruby.jobs.should have(1).item
+      test = Factory.create(:test)
       ruby.jobs.should include(test)
     end
   end

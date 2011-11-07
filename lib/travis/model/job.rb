@@ -25,6 +25,7 @@ class Job < ActiveRecord::Base
 
   before_create do
     build_log
+    self.state = "created" if self.state.nil?
   end
 
   def matrix_config?(config)
@@ -36,7 +37,7 @@ class Job < ActiveRecord::Base
 
   class << self
     def queued
-      where(:state => :started)
+      where(:state => :created)
     end
   end
 end

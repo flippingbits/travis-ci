@@ -28,13 +28,14 @@ describe Job do
       ]
     end
 
-    it "returns jobs that are started but not finished" do
-      jobs.each { |job| job.start! }
-      jobs.first.finish!
+    it "returns jobs that are created but not started or finished" do
+      jobs.first.start!
+      jobs.third.start!
       jobs.third.finish!
 
-      Job.queued.should have(1).item
       Job.queued.should include(jobs.second)
+      Job.queued.should_not include(jobs.first)
+      Job.queued.should_not include(jobs.third)
     end
   end
 end
